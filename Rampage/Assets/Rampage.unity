@@ -1724,11 +1724,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objects:
-  - {fileID: 1189613032}
+  - {fileID: 2000329412139617135}
   - {fileID: 1189613032}
   _cloneType: 0
   _count: 5
-  _randomSeed: 0
+  _randomSeed: 23
   _dataSource: {fileID: 0}
   _clones: []
 --- !u!4 &1863410663
@@ -1739,7 +1739,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1863410661}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.79, y: 0, z: 2.72}
+  m_LocalPosition: {x: 0.33, y: 0, z: 0.88}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
