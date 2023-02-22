@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Shadow
   - Collide
+  - LOD
+  - Wall Chunk
+  - WallChunk
   layers:
   - Default
   - TransparentFX

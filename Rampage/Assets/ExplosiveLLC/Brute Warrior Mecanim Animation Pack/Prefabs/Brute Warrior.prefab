@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 2695674913785282140}
   - component: {fileID: 2695674913785282143}
   - component: {fileID: 1566022882987624308}
+  - component: {fileID: 1609600159}
+  - component: {fileID: 1609600160}
   m_Layer: 0
   m_Name: Brute Warrior
   m_TagString: Player
@@ -33,6 +35,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8590653121877572794}
   m_Father: {fileID: 0}
@@ -217,6 +220,41 @@ MonoBehaviour:
   inputTarget: 0
   inputHorizontal: 0
   inputVertical: 0
+--- !u!114 &1609600159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000329412139617135}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 105f148ab8454f34b961ae8a295f25f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movePositionTransform: {fileID: 0}
+--- !u!195 &1609600160
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000329412139617135}
+  m_Enabled: 0
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1001 &8590653121877435996
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -276,11 +314,14 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: cf95cf1d880caf6488e481d48f9a2cbb, type: 2}
+    - target: {fileID: 601525947060050531, guid: e9332b82da4812a49916bf8fc87b2332, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9332b82da4812a49916bf8fc87b2332, type: 3}
 --- !u!4 &8590653121877572794 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 400102, guid: e9332b82da4812a49916bf8fc87b2332,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 400102, guid: e9332b82da4812a49916bf8fc87b2332, type: 3}
   m_PrefabInstance: {fileID: 8590653121877435996}
   m_PrefabAsset: {fileID: 0}
