@@ -7,16 +7,29 @@ using UnityEngine.XR.Interaction;
 
 public class CharacterStateManager : MonoBehaviour
 {
-  private Component inputActionManager;
-  private Component locomotionSystem;
-  private Component continuousMoveProvider;
-  private Component characterController;
-  private Component continuousTurnProvider;
-  private Rigidbody xrRb;
+  private LocomotionSystem locomotionSystem;
+  private ContinuousMoveProviderBase continuousMoveProvider;
+  private ContinuousTurnProviderBase continuousTurnProvider;
+  private CharacterController characterController;
+  private Rigidbody _xrRb;
+
+
+  public static bool isClimbing;
+  public static bool isLeaping;
+  void Awake()
+  {
+    _xrRb = GetComponent<Rigidbody>();
+
+    locomotionSystem = GetComponent<LocomotionSystem>();
+    continuousMoveProvider = GetComponent<ContinuousMoveProviderBase>();
+    continuousTurnProvider = GetComponent<ContinuousTurnProviderBase>();
+    characterController = GetComponent<CharacterController>();
+
+  }
   // Start is called before the first frame update
   void Start()
   {
-    xrRb = GetComponent<Rigidbody>();
+
   }
 
   // Update is called once per frame
@@ -25,21 +38,44 @@ public class CharacterStateManager : MonoBehaviour
 
   }
 
-  public void deactivateOpenXRComponents()
+  public void DeactivateOpenXRComponents()
   {
-    GetComponent<LocomotionSystem>().enabled = false;
-    GetComponent<ContinuousMoveProviderBase>().enabled = false;
+    // GetComponent<LocomotionSystem>().enabled = false;
+    // GetComponent<ContinuousMoveProviderBase>().enabled = false;
     // GetComponent<ContinuousTurnProviderBase>().enabled = false;
-    GetComponent<CharacterController>().enabled = false;
+    // GetComponent<CharacterController>().enabled = false;
 
+    locomotionSystem.enabled = false;
+    continuousMoveProvider.enabled = false;
+    continuousTurnProvider.enabled = false;
+    characterController.enabled = false;
   }
 
-  public void activateOpenXRComponents()
+  public void ActivateOpenXRComponents()
   {
-    GetComponent<LocomotionSystem>().enabled = true;
-    GetComponent<ContinuousMoveProviderBase>().enabled = true;
+    // GetComponent<LocomotionSystem>().enabled = true;
+    // GetComponent<ContinuousMoveProviderBase>().enabled = true;
     // GetComponent<ContinuousTurnProviderBase>().enabled = true;
-    GetComponent<CharacterController>().enabled = true;
+    // GetComponent<CharacterController>().enabled = true;
+
+    locomotionSystem.enabled = true;
+    continuousMoveProvider.enabled = true;
+    continuousTurnProvider.enabled = true;
+    characterController.enabled = true;
+  }
+
+  public void ActivatePhysics()
+  {
+    _xrRb.isKinematic = false;
+    _xrRb.useGravity = true;
+    // Possibly need to turn on a collider for collision
+  }
+
+  public void DeactivatePhysics()
+  {
+    _xrRb.isKinematic = true;
+    _xrRb.useGravity = false;
+    // Possibly disabel rb collider
   }
 
 }

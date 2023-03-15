@@ -59,7 +59,6 @@ public class ClimbControllerV2 : MonoBehaviour
       if (!isGrabbing)
       {
         currController = this;
-        print(gameObject.name + " grabbed" + ", Current is: " + currController.name);
         isGrabbing = true;
 
       }

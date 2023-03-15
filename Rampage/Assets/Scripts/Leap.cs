@@ -4,80 +4,60 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
+using System.Threading.Tasks;
 
 public class Leap : MonoBehaviour
 {
+  public InputActionProperty leftTrigger;
   public InputActionProperty rightTrigger;
-  public GameObject xrOrigin;
-  private Component inputActionManager;
-  private Component locomotionSystem;
-  private Component continuousMoveProvider;
-  private Component characterController;
-  private Component continuousTurnProvider;
-  private Rigidbody rb;
-  private CapsuleCollider capsuleCollider;
-  bool isLeapActive = false;
+  private Rigidbody _xrRb;
+  private bool _isFalling;
+  public CharacterStateManager stateManager;
+  private bool _jumping = false;
 
-
-  public static Vector3 rightControllerVector;
-  public static Vector3 leftControllerVector;
   // Start is called before the first frame update
   void Start()
   {
-    rightControllerVector = Vector3.zero;
-    leftControllerVector = Vector3.zero;
-
+    _xrRb = GetComponent<Rigidbody>();
+    stateManager = GetComponent<CharacterStateManager>();
   }
+
 
   // Update is called once per frame
   void Update()
   {
-    float rightTrigerActivated = rightTrigger.action.ReadValue<float>();
+    bool leftTriggerPressed = leftTrigger.action.IsPressed();
+    bool rightTriggerPressed = rightTrigger.action.IsPressed();
 
-    if (rightControllerVector != Vector3.zero && leftControllerVector != Vector3.zero && rightTrigerActivated == 1 && !isLeapActive)
+    _isFalling = _xrRb.velocity.y == 0 ? false : true;
+
+    //print("Velocity: " + _xrRb.velocity + ", IsFalling: " + _isFalling.ToString());
+
+    if (!_isFalling && rightTriggerPressed && !_jumping)
     {
-      deactivateDefaultState();
-      activateLeapState();
-      isLeapActive = true;
+      print("Jump");
+      deactivateCompoonents();
+      activatePhysics();
+      _xrRb.AddForce(Vector3.up * 20, ForceMode.Impulse);
+      _jumping = true;
     }
+  }
+
+  void activatePhysics()
+  {
+    _xrRb.isKinematic = false;
+    _xrRb.useGravity = true;
+  }
+  void deactivateCompoonents()
+  {
+    GetComponent<ContinuousMoveProviderBase>().enabled = false;
+    GetComponent<ContinuousTurnProviderBase>().enabled = false;
+    GetComponent<CharacterController>().enabled = false;
+    GetComponent<LocomotionSystem>().enabled = false;
   }
 
   void FixedUpdate()
   {
-    if (isLeapActive)
-    {
-      rb.AddForce(Vector3.up, ForceMode.Impulse);
-    }
-  }
-
-
-  void activateDefaultState()
-  {
-
-    xrOrigin.GetComponent<LocomotionSystem>().enabled = true;
-    xrOrigin.GetComponent<ContinuousMoveProviderBase>().enabled = true;
-    xrOrigin.GetComponent<ContinuousTurnProviderBase>().enabled = true;
-    xrOrigin.GetComponent<CharacterController>().enabled = true;
-  }
-
-  void deactivateDefaultState()
-  {
-    xrOrigin.GetComponent<LocomotionSystem>().enabled = false;
-    xrOrigin.GetComponent<ContinuousMoveProviderBase>().enabled = false;
-    xrOrigin.GetComponent<ContinuousTurnProviderBase>().enabled = false;
-    xrOrigin.GetComponent<CharacterController>().enabled = false;
-  }
-
-  void activateLeapState()
-  {
-    rb = xrOrigin.GetComponent<Rigidbody>();
-    rb.isKinematic = false;
-
-  }
-  void deactivateLeapState()
-  {
-    rb = xrOrigin.GetComponent<Rigidbody>();
-    rb.isKinematic = true;
 
   }
 

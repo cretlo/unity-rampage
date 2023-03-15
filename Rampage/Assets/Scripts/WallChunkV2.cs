@@ -32,7 +32,6 @@ public class WallChunkV2 : MonoBehaviour
 
   public bool AttachConfigJoint()
   {
-    print("Attaching configjoint");
     for (int i = 0; i < surroundingWallChunksList.Count; i++)
     {
       // See if the wall chunk is already attached
