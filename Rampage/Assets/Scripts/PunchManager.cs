@@ -7,7 +7,7 @@ public class PunchManager : MonoBehaviour
 {
   Rigidbody rb;
   public Transform hand;
-  public InputActionProperty trigger;
+  public InputActionProperty primaryButton;
   public Collider punchCollider;
   private bool canPunch;
   private Vector3 handsDir;
@@ -23,8 +23,10 @@ public class PunchManager : MonoBehaviour
 
   void Update()
   {
+
     handsDir = hand.position - rb.position;
-    if (trigger.action.ReadValue<float>() == 1)
+    // primaryButton.action.ReadValue<float>() == 1
+    if (primaryButton.action.ReadValue<float>() == 1)
     {
       canPunch = true;
     }
@@ -47,9 +49,7 @@ public class PunchManager : MonoBehaviour
   {
     if (other.transform.tag == "WallChunk")
     {
-      print(this.name + " HAS EXITED WALLCHUNK");
       punchCollider.isTrigger = false;
-
     }
 
   }

@@ -5,18 +5,21 @@ using UnityEngine;
 public class ClimbingManagerV2 : MonoBehaviour
 {
   public ConfigurableJoint jointHandle;
-  private Rigidbody xrRb;
-  private bool isJointAttached;
-  private CharacterStateManager characterStateManager;
-  private ClimbControllerV2 activeController;
+  private Rigidbody _xrRb;
+  private bool _isJointAttached;
+  private CharacterStateManager _characterStateManager;
+  private ClimbControllerV2 _activeController;
   // Start is called before the first frame update
+  void Awake()
+  {
+    _xrRb = GetComponent<Rigidbody>();
+    _characterStateManager = GetComponent<CharacterStateManager>();
+    _isJointAttached = false;
+    _activeController = null;
+  }
+
   void Start()
   {
-    xrRb = GetComponent<Rigidbody>();
-    characterStateManager = GetComponent<CharacterStateManager>();
-    isJointAttached = false;
-    activeController = null;
-
 
   }
 
@@ -28,7 +31,7 @@ public class ClimbingManagerV2 : MonoBehaviour
     if (ClimbControllerV2.currController)
     {
       // Check if already climbing with the active controller
-      if (activeController == ClimbControllerV2.currController)
+      if (_activeController == ClimbControllerV2.currController)
       {
         // Just move the player
         jointHandle.targetPosition = -ClimbControllerV2.currController.transform.localPosition;
@@ -37,13 +40,20 @@ public class ClimbingManagerV2 : MonoBehaviour
       else
       {
         // Set the new active controller and start climbing with it
-        activeController = ClimbControllerV2.currController;
+        _activeController = ClimbControllerV2.currController;
       }
+
       startClimbing();
+      CharacterStateManager.isClimbing = true;
+      CharacterStateManager.isLeaping = false;
     }
     else
     {
-      notClimbing();
+      if (CharacterStateManager.isClimbing)
+      {
+        notClimbing();
+        CharacterStateManager.isClimbing = false;
+      }
 
     }
 
@@ -51,26 +61,24 @@ public class ClimbingManagerV2 : MonoBehaviour
   }
   void startClimbing()
   {
-    characterStateManager.deactivateOpenXRComponents();
+    _characterStateManager.DeactivateOpenXRComponents();
 
-
-    jointHandle.connectedBody = xrRb;
+    jointHandle.connectedBody = _xrRb;
     jointHandle.transform.position = ClimbControllerV2.currController.transform.position;
-    jointHandle.transform.rotation = xrRb.rotation;
+    jointHandle.transform.rotation = _xrRb.rotation;
     jointHandle.targetPosition = -ClimbControllerV2.currController.transform.localPosition;
-    xrRb.useGravity = false;
-    xrRb.isKinematic = false;
-    isJointAttached = true;
 
+    _xrRb.useGravity = false;
+    _xrRb.isKinematic = false;
+    _isJointAttached = true;
   }
 
   void notClimbing()
   {
-    activeController = null;
-    isJointAttached = false;
+    _activeController = null;
+    _isJointAttached = false;
     jointHandle.connectedBody = null;
-    xrRb.isKinematic = true;
-    characterStateManager.activateOpenXRComponents();
-
+    _xrRb.isKinematic = true;
+    _characterStateManager.ActivateOpenXRComponents();
   }
 }

@@ -37,7 +37,6 @@ public class CharacterStateManager : MonoBehaviour
   {
 
   }
-
   public void DeactivateOpenXRComponents()
   {
     // GetComponent<LocomotionSystem>().enabled = false;
@@ -45,10 +44,10 @@ public class CharacterStateManager : MonoBehaviour
     // GetComponent<ContinuousTurnProviderBase>().enabled = false;
     // GetComponent<CharacterController>().enabled = false;
 
-    locomotionSystem.enabled = false;
+    characterController.enabled = false;
     continuousMoveProvider.enabled = false;
     continuousTurnProvider.enabled = false;
-    characterController.enabled = false;
+    locomotionSystem.enabled = false;
   }
 
   public void ActivateOpenXRComponents()
@@ -58,10 +57,10 @@ public class CharacterStateManager : MonoBehaviour
     // GetComponent<ContinuousTurnProviderBase>().enabled = true;
     // GetComponent<CharacterController>().enabled = true;
 
-    locomotionSystem.enabled = true;
+    characterController.enabled = true;
     continuousMoveProvider.enabled = true;
     continuousTurnProvider.enabled = true;
-    characterController.enabled = true;
+    locomotionSystem.enabled = true;
   }
 
   public void ActivatePhysics()

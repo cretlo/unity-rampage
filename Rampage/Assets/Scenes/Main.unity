@@ -430,8 +430,10 @@ GameObject:
   - component: {fileID: 892089441}
   - component: {fileID: 892089440}
   - component: {fileID: 892089439}
+  - component: {fileID: 892089448}
   - component: {fileID: 892089438}
   - component: {fileID: 892089446}
+  - component: {fileID: 892089447}
   m_Layer: 6
   m_Name: XR Origin
   m_TagString: Untagged
@@ -640,6 +642,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375cf09ab2c7bd542a03a472badab678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &892089447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892089436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fbe3ec87db006149997d5956b2cf271, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftTrigger:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Left Trigger
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 1b958fb1-1c48-4a90-b721-b00063172408
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: -5982496924579745919, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  rightTrigger:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Right Trigger
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 6db62360-5c61-457a-b8f1-c3d6e6555490
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  leftController: {fileID: 1070992376}
+  rightController: {fileID: 1412725372}
+--- !u!136 &892089448
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892089436}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.1
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &984226125
 GameObject:
   m_ObjectHideFlags: 0
@@ -1035,13 +1089,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: {fileID: 1412725372}
-  trigger:
+  primaryButton:
     m_UseReference: 1
     m_Action:
-      m_Name: Trigger
+      m_Name: Primary Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: e87eefe4-7930-43f5-9129-a9e3ca9f50eb
+      m_Id: 4b20fc2c-d9e1-45f4-b9e7-1aead6216c78
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -1848,13 +1902,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: {fileID: 1070992376}
-  trigger:
+  primaryButton:
     m_UseReference: 1
     m_Action:
-      m_Name: Trigger
+      m_Name: Primary Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: e87eefe4-7930-43f5-9129-a9e3ca9f50eb
+      m_Id: 544a7458-598b-4ed3-b0e3-834d0a9004f5
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
