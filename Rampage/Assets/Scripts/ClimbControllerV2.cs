@@ -14,7 +14,7 @@ public class ClimbControllerV2 : MonoBehaviour
   bool printed;
 
   // Start is called before the first frame update
-  void Start()
+  void Awake()
   {
     currController = null;
     printed = false;
@@ -27,19 +27,25 @@ public class ClimbControllerV2 : MonoBehaviour
   {
     // Get the grip input from controller
     grabPressed = controllerInput.action.ReadValue<float>();
+    // isGrabbing = grabPressed == 1 ? true : false;
 
 
-    // Controller let go
+
+    // // Controller let go
     if (grabPressed == 0)
     {
-      isGrabbing = false;
+      if (currController == this)
+      {
+        currController = null;
+        isGrabbing = false;
+      }
     }
 
     // Release if not grabbing
-    if (!isGrabbing && currController == this)
-    {
-      currController = null;
-    }
+    // if (!isGrabbing && currController == this)
+    // {
+    //   currController = null;
+    // }
 
 
   }
@@ -48,20 +54,25 @@ public class ClimbControllerV2 : MonoBehaviour
   {
     if (col.tag == "WallChunk")
     {
-      isGrabbing = false;
+      if (currController == this)
+      {
+        currController = null;
+        // isGrabbing = false;
+
+      }
     }
   }
 
   void OnTriggerStay(Collider col)
   {
-    if (col.tag == "WallChunk" && grabPressed > 0 && currController != this)
+    if (col.tag == "WallChunk" && grabPressed == 1 && currController != this)
     {
-      if (!isGrabbing)
-      {
-        currController = this;
-        isGrabbing = true;
+      currController = this;
+      // if (!isGrabbing)
+      // {
+      // isGrabbing = true;
 
-      }
+      // }
     }
 
   }

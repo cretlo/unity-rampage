@@ -13,8 +13,7 @@ public class Leap : MonoBehaviour
   private Rigidbody _xrRb;
   private bool _isFalling;
   private CharacterStateManager _characterStateManager;
-  private bool _jumping = false;
-  private bool _attemptingToJump = false;
+  private bool _attemptingToLeap = false;
 
   public Transform leftController;
   public Transform rightController;
@@ -23,10 +22,15 @@ public class Leap : MonoBehaviour
   private Vector3 rightControllerStartPos;
 
   // Start is called before the first frame update
-  void Start()
+  void Awake()
   {
     _characterStateManager = GetComponent<CharacterStateManager>();
     _xrRb = GetComponent<Rigidbody>();
+  }
+
+  void Start()
+  {
+
   }
 
 
@@ -38,29 +42,33 @@ public class Leap : MonoBehaviour
 
     _isFalling = _xrRb.velocity.y > 0 ? true : false;
 
-    //print("Velocity: " + _xrRb.velocity + ", IsFalling: " + _isFalling.ToString());
-    if (leftTriggerPressed && rightTriggerPressed && !_attemptingToJump)
+    // Dont allow any leaping if climbing
+    if (CharacterStateManager.isClimbing || CharacterStateManager.isLeaping)
     {
-      print(leftTrigger.reference.name);
-      _attemptingToJump = true;
+      return;
+    }
+
+    //print("Velocity: " + _xrRb.velocity + ", IsFalling: " + _isFalling.ToString());
+    if (leftTriggerPressed && rightTriggerPressed && !_attemptingToLeap)
+    {
+      _attemptingToLeap = true;
       leftControllerStartPos = leftController.position;
       rightControllerStartPos = rightController.position;
 
     }
 
-    if (_attemptingToJump && !leftTriggerPressed && !rightTriggerPressed)
+    if (_attemptingToLeap && !leftTriggerPressed && !rightTriggerPressed)
     {
-      _attemptingToJump = false;
+      _attemptingToLeap = false;
       Vector3 rightVector = rightControllerStartPos - rightController.position;
       Vector3 leftVector = leftControllerStartPos - leftController.position;
 
-      CharacterStateManager.isLeaping = true;
 
       _characterStateManager.DeactivateOpenXRComponents();
       _characterStateManager.ActivatePhysics();
       _xrRb.AddForce((rightVector + leftVector) * 5, ForceMode.Impulse);
-      _jumping = true;
 
+      CharacterStateManager.isLeaping = true;
 
     }
 
@@ -87,10 +95,15 @@ public class Leap : MonoBehaviour
 
   void OnCollisionEnter(Collision collision)
   {
-    // If we hit something allow moving
-    _characterStateManager.DeactivatePhysics();
-    _characterStateManager.ActivateOpenXRComponents();
-    CharacterStateManager.isLeaping = false;
+    // If we hit something, and not climbing, allow movement
+    if (!CharacterStateManager.isClimbing)
+    {
+      _characterStateManager.DeactivatePhysics();
+      _characterStateManager.ActivateOpenXRComponents();
+      CharacterStateManager.isLeaping = false;
+
+
+    }
 
 
   }

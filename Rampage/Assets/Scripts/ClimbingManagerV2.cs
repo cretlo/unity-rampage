@@ -26,12 +26,21 @@ public class ClimbingManagerV2 : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
+    // if (ClimbControllerV2.currController != null)
+    // {
+    //   print("Printing");
 
-    // If ready to climb
-    if (ClimbControllerV2.currController)
+    // }
+
+
+    // There is a controller gripping and in a wall
+    if (ClimbControllerV2.currController != null)
     {
+
+      CharacterStateManager.isLeaping = false;
+
       // Check if already climbing with the active controller
-      if (_activeController == ClimbControllerV2.currController)
+      if (_activeController != null && _activeController == ClimbControllerV2.currController)
       {
         // Just move the player
         jointHandle.targetPosition = -ClimbControllerV2.currController.transform.localPosition;
@@ -41,44 +50,55 @@ public class ClimbingManagerV2 : MonoBehaviour
       {
         // Set the new active controller and start climbing with it
         _activeController = ClimbControllerV2.currController;
+        StartClimbing();
+
       }
 
-      startClimbing();
-      CharacterStateManager.isClimbing = true;
-      CharacterStateManager.isLeaping = false;
+
+
     }
     else
     {
       if (CharacterStateManager.isClimbing)
       {
-        notClimbing();
-        CharacterStateManager.isClimbing = false;
+        StopClimbing();
+        //print("Deactivated Climbing");
       }
-
     }
 
 
   }
-  void startClimbing()
+  void StartClimbing()
   {
+    //print("STARTED CLIMBING");
     _characterStateManager.DeactivateOpenXRComponents();
+    _characterStateManager.ActivateClimbingPhysics();
 
     jointHandle.connectedBody = _xrRb;
-    jointHandle.transform.position = ClimbControllerV2.currController.transform.position;
+    // jointHandle.transform.position = ClimbControllerV2.currController.transform.position;
+    jointHandle.transform.position = _activeController.transform.position;
     jointHandle.transform.rotation = _xrRb.rotation;
-    jointHandle.targetPosition = -ClimbControllerV2.currController.transform.localPosition;
+    // jointHandle.targetPosition = -ClimbControllerV2.currController.transform.localPosition;
+    jointHandle.targetPosition = -_activeController.transform.localPosition;
 
-    _xrRb.useGravity = false;
-    _xrRb.isKinematic = false;
+    // _xrRb.useGravity = false;
+    // _xrRb.isKinematic = false;
     _isJointAttached = true;
+
+    CharacterStateManager.isClimbing = true;
+    return;
   }
 
-  void notClimbing()
+  void StopClimbing()
   {
     _activeController = null;
     _isJointAttached = false;
     jointHandle.connectedBody = null;
-    _xrRb.isKinematic = true;
+    // _xrRb.isKinematic = true;
+    _characterStateManager.DeactivatePhysics();
     _characterStateManager.ActivateOpenXRComponents();
+
+    CharacterStateManager.isClimbing = false;
+    return;
   }
 }
