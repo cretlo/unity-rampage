@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
-using UnityEngine.XR.Interaction;
+using UnityEngine.InputSystem;
+using Unity.XR.CoreUtils;
 
 public class CharacterStateManager : MonoBehaviour
 {
@@ -13,14 +14,15 @@ public class CharacterStateManager : MonoBehaviour
   private CharacterController characterController;
   private InputActionManager inputActionManager;
   private Rigidbody _xrRb;
+  public InputActionAsset inputAsset;
 
 
-  public static bool isClimbing = false;
-  public static bool isLeaping = false;
+  public static bool isClimbing;
+  public static bool isLeaping;
   void Awake()
   {
-    // isClimbing = false;
-    // isLeaping = false;
+    isClimbing = false;
+    isLeaping = false;
     _xrRb = GetComponent<Rigidbody>();
 
     locomotionSystem = GetComponent<LocomotionSystem>();
@@ -48,9 +50,10 @@ public class CharacterStateManager : MonoBehaviour
     _xrRb.useGravity = false;
 
     //inputActionManager.enabled = false;
-    //locomotionSystem.enabled = false;
+    //    inputActionManager.DisableInput();
     continuousMoveProvider.enabled = false;
     continuousTurnProvider.enabled = false;
+    //locomotionSystem.enabled = false;
     characterController.enabled = false;
 
     CharacterStateManager.isClimbing = true;
@@ -61,11 +64,13 @@ public class CharacterStateManager : MonoBehaviour
     _xrRb.isKinematic = true;
     _xrRb.useGravity = false;
 
+    //inputActionManager.EnableInput();
     //inputActionManager.enabled = true;
-    //locomotionSystem.enabled = true;
     characterController.enabled = true;
     continuousMoveProvider.enabled = true;
     continuousTurnProvider.enabled = true;
+    SetReferences();
+    //locomotionSystem.enabled = true;
 
     CharacterStateManager.isClimbing = false;
     CharacterStateManager.isLeaping = false;
@@ -74,15 +79,29 @@ public class CharacterStateManager : MonoBehaviour
 
   public void LeapingState()
   {
+    //inputActionManager.DisableInput();
     //inputActionManager.enabled = false;
-    // locomotionSystem.enabled = false;
     continuousMoveProvider.enabled = false;
     continuousTurnProvider.enabled = false;
     characterController.enabled = false;
+    //locomotionSystem.enabled = false;
 
     _xrRb.isKinematic = false;
     _xrRb.useGravity = true;
 
     CharacterStateManager.isLeaping = true;
+  }
+
+  private void SetReferences()
+  {
+    if (inputActionManager.actionAssets[0] == null)
+    {
+      print("Action Asset was null");
+      inputActionManager.actionAssets[0] = inputAsset;
+    }
+    locomotionSystem.xrOrigin = GetComponent<XROrigin>();
+    continuousMoveProvider.system = locomotionSystem;
+    continuousTurnProvider.system = locomotionSystem;
+
   }
 }
