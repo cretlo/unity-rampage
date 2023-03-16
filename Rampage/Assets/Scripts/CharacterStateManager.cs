@@ -41,53 +41,48 @@ public class CharacterStateManager : MonoBehaviour
   {
 
   }
-  public void DeactivateOpenXRComponents()
-  {
-    // GetComponent<LocomotionSystem>().enabled = false;
-    // GetComponent<ContinuousMoveProviderBase>().enabled = false;
-    // GetComponent<ContinuousTurnProviderBase>().enabled = false;
-    // GetComponent<CharacterController>().enabled = false;
 
-    characterController.enabled = false;
-    // inputActionManager.enabled = false;
-    // locomotionSystem.enabled = false;
-    continuousMoveProvider.enabled = false;
-    continuousTurnProvider.enabled = false;
-  }
-
-  public void ActivateOpenXRComponents()
-  {
-    // GetComponent<LocomotionSystem>().enabled = true;
-    // GetComponent<ContinuousMoveProviderBase>().enabled = true;
-    // GetComponent<ContinuousTurnProviderBase>().enabled = true;
-    // GetComponent<CharacterController>().enabled = true;
-
-    characterController.enabled = true;
-    // inputActionManager.enabled = true;
-    // locomotionSystem.enabled = true;
-    continuousMoveProvider.enabled = true;
-    continuousTurnProvider.enabled = true;
-  }
-
-  public void ActivateClimbingPhysics()
+  public void ClimbingState()
   {
     _xrRb.isKinematic = false;
     _xrRb.useGravity = false;
 
+    //inputActionManager.enabled = false;
+    //locomotionSystem.enabled = false;
+    continuousMoveProvider.enabled = false;
+    continuousTurnProvider.enabled = false;
+    characterController.enabled = false;
+
+    CharacterStateManager.isClimbing = true;
   }
 
-  public void ActivatePhysics()
-  {
-    _xrRb.isKinematic = false;
-    _xrRb.useGravity = true;
-    // Possibly need to turn on a collider for collision
-  }
-
-  public void DeactivatePhysics()
+  public void NormalState()
   {
     _xrRb.isKinematic = true;
     _xrRb.useGravity = false;
-    // Possibly disabel rb collider
+
+    //inputActionManager.enabled = true;
+    //locomotionSystem.enabled = true;
+    characterController.enabled = true;
+    continuousMoveProvider.enabled = true;
+    continuousTurnProvider.enabled = true;
+
+    CharacterStateManager.isClimbing = false;
+    CharacterStateManager.isLeaping = false;
+
   }
 
+  public void LeapingState()
+  {
+    //inputActionManager.enabled = false;
+    // locomotionSystem.enabled = false;
+    continuousMoveProvider.enabled = false;
+    continuousTurnProvider.enabled = false;
+    characterController.enabled = false;
+
+    _xrRb.isKinematic = false;
+    _xrRb.useGravity = true;
+
+    CharacterStateManager.isLeaping = true;
+  }
 }

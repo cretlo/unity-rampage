@@ -71,8 +71,9 @@ public class ClimbingManagerV2 : MonoBehaviour
   void StartClimbing()
   {
     //print("STARTED CLIMBING");
-    _characterStateManager.DeactivateOpenXRComponents();
-    _characterStateManager.ActivateClimbingPhysics();
+    // _characterStateManager.DeactivateOpenXRComponents();
+    // _characterStateManager.ActivateClimbingPhysics();
+    _characterStateManager.ClimbingState();
 
     jointHandle.connectedBody = _xrRb;
     // jointHandle.transform.position = ClimbControllerV2.currController.transform.position;
@@ -85,7 +86,7 @@ public class ClimbingManagerV2 : MonoBehaviour
     // _xrRb.isKinematic = false;
     _isJointAttached = true;
 
-    CharacterStateManager.isClimbing = true;
+    // CharacterStateManager.isClimbing = true;
     return;
   }
 
@@ -95,10 +96,11 @@ public class ClimbingManagerV2 : MonoBehaviour
     _isJointAttached = false;
     jointHandle.connectedBody = null;
     // _xrRb.isKinematic = true;
-    _characterStateManager.DeactivatePhysics();
-    _characterStateManager.ActivateOpenXRComponents();
+    // _characterStateManager.DeactivatePhysics();
+    // _characterStateManager.ActivateOpenXRComponents();
+    _characterStateManager.NormalState();
 
-    CharacterStateManager.isClimbing = false;
+    // CharacterStateManager.isClimbing = false;
     return;
   }
 }

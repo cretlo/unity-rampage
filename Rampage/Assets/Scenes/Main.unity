@@ -706,7 +706,7 @@ GameObject:
   - component: {fileID: 981158665}
   m_Layer: 0
   m_Name: ParticleManager
-  m_TagString: Untagged
+  m_TagString: ParticleManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1147,7 +1147,6 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: -2213383373519576259, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   punchCollider: {fileID: 1212570069}
-  particleManager: {fileID: 981158665}
 --- !u!54 &1212570071
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1961,7 +1960,6 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: 3601576460912032548, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   punchCollider: {fileID: 1457540139}
-  particleManager: {fileID: 981158665}
 --- !u!54 &1457540141
 Rigidbody:
   m_ObjectHideFlags: 0
