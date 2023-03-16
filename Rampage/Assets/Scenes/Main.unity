@@ -694,6 +694,51 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &981158664
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 981158666}
+  - component: {fileID: 981158665}
+  m_Layer: 0
+  m_Name: ParticleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &981158665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981158664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 698d049ed9f0e4a439aaafcfc625448e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  punchParticle: {fileID: 6659357012523174617, guid: 8ebae9cea99ad9c4a9c5e2bdb9f35126, type: 3}
+--- !u!4 &981158666
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981158664}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.7986317, y: 3.9441135, z: -7.721489}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &984226125
 GameObject:
   m_ObjectHideFlags: 0
@@ -1102,6 +1147,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: -2213383373519576259, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   punchCollider: {fileID: 1212570069}
+  particleManager: {fileID: 981158665}
 --- !u!54 &1212570071
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1915,6 +1961,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: 3601576460912032548, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   punchCollider: {fileID: 1457540139}
+  particleManager: {fileID: 981158665}
 --- !u!54 &1457540141
 Rigidbody:
   m_ObjectHideFlags: 0

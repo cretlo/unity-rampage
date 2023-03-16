@@ -9,6 +9,7 @@ public class PunchManager : MonoBehaviour
   public Transform hand;
   public InputActionProperty primaryButton;
   public Collider punchCollider;
+  public ParticleManager particleManager;
   private bool canPunch;
   private Vector3 handsDir;
   // Start is called before the first frame update
@@ -62,11 +63,16 @@ public class PunchManager : MonoBehaviour
       // if (collision.transform.tag != "WallChunk") { return; }
       Vector3 forceOfHit = other.impulse / Time.fixedDeltaTime;
       Vector3 clampedForce = Vector3.ClampMagnitude(forceOfHit, 100);
+      var contact = other.GetContact(0);
       // print("Unclamped Force: " + forceOfHit + ", Clamped Force: " + clampedForce);
 
       other.gameObject.GetComponent<Rigidbody>().AddRelativeForce(clampedForce * 25, ForceMode.Force);
       // collision.gameObject.GetComponent<Rigidbody>().AddRelativeForce(final * 50, ForceMode.Force);
 
+      // Spawn a hit particle
+      particleManager.SpawnPunchParticles(other.GetContact(0).point, contact.normal);
+
+      // Joint damage to the WallChunk
       ConfigurableJoint[] joints = other.gameObject.GetComponents<ConfigurableJoint>();
 
       if (joints.Length == 0) { return; }
