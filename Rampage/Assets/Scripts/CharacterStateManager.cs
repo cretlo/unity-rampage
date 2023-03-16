@@ -85,7 +85,7 @@ public class CharacterStateManager : MonoBehaviour
   public void LeapingState()
   {
     //inputActionManager.DisableInput();
-    inputActionManager.enabled = false;
+    //inputActionManager.enabled = false;
     continuousMoveProvider.enabled = false;
     continuousTurnProvider.enabled = false;
     characterController.enabled = false;
