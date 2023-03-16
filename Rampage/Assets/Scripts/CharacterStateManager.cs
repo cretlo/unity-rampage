@@ -8,13 +8,13 @@ using Unity.XR.CoreUtils;
 
 public class CharacterStateManager : MonoBehaviour
 {
-  private LocomotionSystem locomotionSystem;
-  private ActionBasedContinuousMoveProvider continuousMoveProvider;
-  private ActionBasedContinuousTurnProvider continuousTurnProvider;
-  private CharacterController characterController;
-  private InputActionManager inputActionManager;
-  private Rigidbody _xrRb;
   public InputActionAsset inputAsset;
+  private LocomotionSystem _locomotionSystem;
+  private ActionBasedContinuousMoveProvider _continuousMoveProvider;
+  private ActionBasedContinuousTurnProvider _continuousTurnProvider;
+  private CharacterController _characterController;
+  private InputActionManager _inputActionManager;
+  private Rigidbody _xrRb;
 
   private InputActionProperty _leftInputAction;
   private InputActionProperty _rightInputAction;
@@ -28,14 +28,14 @@ public class CharacterStateManager : MonoBehaviour
     isLeaping = false;
     _xrRb = GetComponent<Rigidbody>();
 
-    locomotionSystem = GetComponent<LocomotionSystem>();
-    continuousMoveProvider = GetComponent<ActionBasedContinuousMoveProvider>();
-    continuousTurnProvider = GetComponent<ActionBasedContinuousTurnProvider>();
-    characterController = GetComponent<CharacterController>();
-    inputActionManager = GetComponent<InputActionManager>();
+    _locomotionSystem = GetComponent<LocomotionSystem>();
+    _continuousMoveProvider = GetComponent<ActionBasedContinuousMoveProvider>();
+    _continuousTurnProvider = GetComponent<ActionBasedContinuousTurnProvider>();
+    _characterController = GetComponent<CharacterController>();
+    _inputActionManager = GetComponent<InputActionManager>();
 
-    _leftInputAction = continuousMoveProvider.leftHandMoveAction;
-    _rightInputAction = continuousTurnProvider.rightHandTurnAction;
+    _leftInputAction = _continuousMoveProvider.leftHandMoveAction;
+    _rightInputAction = _continuousTurnProvider.rightHandTurnAction;
   }
   // Start is called before the first frame update
   void Start()
@@ -56,10 +56,10 @@ public class CharacterStateManager : MonoBehaviour
 
     //inputActionManager.enabled = false;
     //    inputActionManager.DisableInput();
-    continuousMoveProvider.enabled = false;
-    continuousTurnProvider.enabled = false;
-    characterController.enabled = false;
-    locomotionSystem.enabled = false;
+    _continuousMoveProvider.enabled = false;
+    _continuousTurnProvider.enabled = false;
+    _characterController.enabled = false;
+    _locomotionSystem.enabled = false;
 
     CharacterStateManager.isClimbing = true;
   }
@@ -70,11 +70,11 @@ public class CharacterStateManager : MonoBehaviour
     _xrRb.useGravity = false;
 
     //inputActionManager.EnableInput();
-    inputActionManager.enabled = true;
-    characterController.enabled = true;
-    continuousMoveProvider.enabled = true;
-    continuousTurnProvider.enabled = true;
-    locomotionSystem.enabled = true;
+    _inputActionManager.enabled = true;
+    _characterController.enabled = true;
+    _continuousMoveProvider.enabled = true;
+    _continuousTurnProvider.enabled = true;
+    _locomotionSystem.enabled = true;
     SetReferences();
 
     CharacterStateManager.isClimbing = false;
@@ -86,10 +86,10 @@ public class CharacterStateManager : MonoBehaviour
   {
     //inputActionManager.DisableInput();
     //inputActionManager.enabled = false;
-    continuousMoveProvider.enabled = false;
-    continuousTurnProvider.enabled = false;
-    characterController.enabled = false;
-    locomotionSystem.enabled = false;
+    _continuousMoveProvider.enabled = false;
+    _continuousTurnProvider.enabled = false;
+    _characterController.enabled = false;
+    _locomotionSystem.enabled = false;
 
     _xrRb.isKinematic = false;
     _xrRb.useGravity = true;
@@ -99,18 +99,18 @@ public class CharacterStateManager : MonoBehaviour
 
   private void SetReferences()
   {
-    if (inputActionManager.actionAssets[0] == null)
+    if (_inputActionManager.actionAssets[0] == null)
     {
       print("Action Asset was null");
-      inputActionManager.actionAssets[0] = inputAsset;
+      _inputActionManager.actionAssets[0] = inputAsset;
     }
-    locomotionSystem.xrOrigin = GetComponent<XROrigin>();
-    continuousMoveProvider.leftHandMoveAction = _leftInputAction;
-    continuousMoveProvider.rightHandMoveAction = new InputActionProperty();
-    continuousMoveProvider.system = locomotionSystem;
-    continuousTurnProvider.rightHandTurnAction = _rightInputAction;
-    continuousTurnProvider.leftHandTurnAction = new InputActionProperty();
-    continuousTurnProvider.system = locomotionSystem;
+    _locomotionSystem.xrOrigin = GetComponent<XROrigin>();
+    _continuousMoveProvider.leftHandMoveAction = _leftInputAction;
+    _continuousMoveProvider.rightHandMoveAction = new InputActionProperty();
+    _continuousMoveProvider.system = _locomotionSystem;
+    _continuousTurnProvider.rightHandTurnAction = _rightInputAction;
+    _continuousTurnProvider.leftHandTurnAction = new InputActionProperty();
+    _continuousTurnProvider.system = _locomotionSystem;
 
   }
 }

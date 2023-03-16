@@ -6,7 +6,6 @@ public class ClimbingManagerV2 : MonoBehaviour
 {
   public ConfigurableJoint jointHandle;
   private Rigidbody _xrRb;
-  private bool _isJointAttached;
   private CharacterStateManager _characterStateManager;
   private ClimbControllerV2 _activeController;
   // Start is called before the first frame update
@@ -14,7 +13,6 @@ public class ClimbingManagerV2 : MonoBehaviour
   {
     _xrRb = GetComponent<Rigidbody>();
     _characterStateManager = GetComponent<CharacterStateManager>();
-    _isJointAttached = false;
     _activeController = null;
   }
 
@@ -26,12 +24,6 @@ public class ClimbingManagerV2 : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    // if (ClimbControllerV2.currController != null)
-    // {
-    //   print("Printing");
-
-    // }
-
 
     // There is a controller gripping and in a wall
     if (ClimbControllerV2.currController != null)
@@ -62,11 +54,9 @@ public class ClimbingManagerV2 : MonoBehaviour
       if (CharacterStateManager.isClimbing)
       {
         StopClimbing();
-        //print("Deactivated Climbing");
       }
     }
-
-
+    return;
   }
   void StartClimbing()
   {
@@ -82,25 +72,16 @@ public class ClimbingManagerV2 : MonoBehaviour
     // jointHandle.targetPosition = -ClimbControllerV2.currController.transform.localPosition;
     jointHandle.targetPosition = -_activeController.transform.localPosition;
 
-    // _xrRb.useGravity = false;
-    // _xrRb.isKinematic = false;
-    _isJointAttached = true;
 
-    // CharacterStateManager.isClimbing = true;
     return;
   }
 
   void StopClimbing()
   {
     _activeController = null;
-    _isJointAttached = false;
     jointHandle.connectedBody = null;
-    // _xrRb.isKinematic = true;
-    // _characterStateManager.DeactivatePhysics();
-    // _characterStateManager.ActivateOpenXRComponents();
     _characterStateManager.NormalState();
 
-    // CharacterStateManager.isClimbing = false;
     return;
   }
 }

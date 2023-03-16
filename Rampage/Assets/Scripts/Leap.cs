@@ -10,16 +10,16 @@ public class Leap : MonoBehaviour
 {
   public InputActionProperty leftTrigger;
   public InputActionProperty rightTrigger;
-  private Rigidbody _xrRb;
-  private bool _isFalling;
-  private CharacterStateManager _characterStateManager;
-  private bool _attemptingToLeap = false;
 
   public Transform leftController;
   public Transform rightController;
 
-  private Vector3 leftControllerStartPos;
-  private Vector3 rightControllerStartPos;
+  private Rigidbody _xrRb;
+  private bool _isFalling;
+  private CharacterStateManager _characterStateManager;
+  private bool _attemptingToLeap = false;
+  private Vector3 _leftControllerStartPos;
+  private Vector3 _rightControllerStartPos;
 
   // Start is called before the first frame update
   void Awake()
@@ -37,8 +37,8 @@ public class Leap : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    bool leftTriggerPressed = leftTrigger.action.IsPressed();
-    bool rightTriggerPressed = rightTrigger.action.IsPressed();
+    bool _leftTriggerPressed = leftTrigger.action.IsPressed();
+    bool _rightTriggerPressed = rightTrigger.action.IsPressed();
 
     _isFalling = _xrRb.velocity.y > 0 ? true : false;
 
@@ -49,19 +49,19 @@ public class Leap : MonoBehaviour
     }
 
     //print("Velocity: " + _xrRb.velocity + ", IsFalling: " + _isFalling.ToString());
-    if (leftTriggerPressed && rightTriggerPressed && !_attemptingToLeap)
+    if (_leftTriggerPressed && _rightTriggerPressed && !_attemptingToLeap)
     {
       _attemptingToLeap = true;
-      leftControllerStartPos = leftController.position;
-      rightControllerStartPos = rightController.position;
+      _leftControllerStartPos = leftController.position;
+      _rightControllerStartPos = rightController.position;
 
     }
 
-    if (_attemptingToLeap && !leftTriggerPressed && !rightTriggerPressed)
+    if (_attemptingToLeap && !_leftTriggerPressed && !_rightTriggerPressed)
     {
       _attemptingToLeap = false;
-      Vector3 rightVector = rightControllerStartPos - rightController.position;
-      Vector3 leftVector = leftControllerStartPos - leftController.position;
+      Vector3 rightVector = _rightControllerStartPos - rightController.position;
+      Vector3 leftVector = _leftControllerStartPos - leftController.position;
 
 
       _characterStateManager.LeapingState();

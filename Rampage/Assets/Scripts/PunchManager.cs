@@ -5,17 +5,18 @@ using UnityEngine.InputSystem;
 
 public class PunchManager : MonoBehaviour
 {
-  Rigidbody rb;
   public Transform hand;
   public InputActionProperty primaryButton;
   public Collider punchCollider;
+  private Rigidbody _rb;
   private ParticleManager _particleManager;
-  private bool _canPunch;
   private Vector3 _handsDir;
+  private bool _canPunch;
+
   void Awake()
   {
     transform.position = hand.position; // Start at rig position
-    rb = GetComponent<Rigidbody>();
+    _rb = GetComponent<Rigidbody>();
     _canPunch = false;
     _particleManager = GameObject.FindWithTag("ParticleManager").GetComponent<ParticleManager>();
 
@@ -34,7 +35,7 @@ public class PunchManager : MonoBehaviour
   void Update()
   {
 
-    _handsDir = hand.position - rb.position;
+    _handsDir = hand.position - _rb.position;
     if (primaryButton.action.ReadValue<float>() == 1)
     {
       _canPunch = true;
@@ -49,8 +50,8 @@ public class PunchManager : MonoBehaviour
   void FixedUpdate()
   {
     //Moves physics hands to controller with controller rotation
-    rb.MovePosition(hand.transform.position);
-    rb.MoveRotation(hand.rotation);
+    _rb.MovePosition(hand.transform.position);
+    _rb.MoveRotation(hand.rotation);
   }
 
   void OnTriggerExit(Collider other)
@@ -72,9 +73,8 @@ public class PunchManager : MonoBehaviour
       Vector3 clampedForce = Vector3.ClampMagnitude(forceOfHit, 100);
       ContactPoint contact = collider.GetContact(0);
 
-      // print("Unclamped Force: " + forceOfHit + ", Clamped Force: " + clampedForce);
+      // Apply impact
       collider.gameObject.GetComponent<Rigidbody>().AddRelativeForce(clampedForce * 25, ForceMode.Force);
-      // collision.gameObject.GetComponent<Rigidbody>().AddRelativeForce(final * 50, ForceMode.Force);
 
       // Spawn a hit particle
       _particleManager.SpawnPunchParticles(contact.point, contact.normal);

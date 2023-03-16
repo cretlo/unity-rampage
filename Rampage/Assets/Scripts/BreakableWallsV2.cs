@@ -8,21 +8,16 @@ public class BreakableWallsV2 : MonoBehaviour
   // Start is called before the first frame update
   void Awake()
   {
-    setupWallChunks();
-
-
-
-
+    SetupWallChunks();
   }
 
   void Start()
   {
-
     // Removes the setup objects
     Invoke("RemoveComponents", 0.5f);
   }
 
-  void setupWallChunks()
+  void SetupWallChunks()
   {
     for (int i = 0; i < transform.childCount; i++)
     {
@@ -48,10 +43,11 @@ public class BreakableWallsV2 : MonoBehaviour
 
     }
 
+    // Add the wall chunk logic to each wall chunk
     for (int i = 0; i < transform.childCount; i++)
     {
       GameObject wallChunk = transform.GetChild(i).gameObject;
-      // Add necessary components to the actual wall chunk
+      // Necessary components to the actual wall chunk
       Rigidbody rb = wallChunk.AddComponent<Rigidbody>();
       rb.isKinematic = true;
       wallChunk.tag = "WallChunk";
