@@ -75,6 +75,11 @@ public class WallChunkV2 : MonoBehaviour
 
   }
 
+  void OnJointBreak()
+  {
+    GameManager.gameManager.AddPoints(10);
+  }
+
   void AddConfigJoint(GameObject obj)
   {
 
