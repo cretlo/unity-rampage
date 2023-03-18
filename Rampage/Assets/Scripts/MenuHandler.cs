@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class MenuHandler : MonoBehaviour
 {
   public InputActionProperty joystickButton;
+  public TextMeshProUGUI buttonText;
   private RectTransform _canvas;
   private float _canvasWidth;
   private float _canvasHeight;
   private bool _joystickClickActive;
   private float _time;
   private float maxScale = 0.1f;
+  private Collider test;
 
   private float lerpedScale;
   private float lerpedShrinkingScale;
@@ -40,6 +43,18 @@ public class MenuHandler : MonoBehaviour
   {
     ShowMenu();
 
+    // Change button text if the run is ended
+    if (GameManager.gameManager.IsRunEnded())
+    {
+      buttonText.text = "Restart";
+
+    }
+
+  }
+
+  public void EndGameButtonClicked()
+  {
+    print("IT IS CLICKED");
   }
 
   void ShowMenu()
