@@ -55,9 +55,10 @@ public class MenuHandler : MonoBehaviour
 
   }
 
-  public void DisplayPlayers(List<string> players)
+  public void DisplayPlayers(List<Player> players)
   {
     int listedPlayersCount = playerInfoContainer.transform.childCount;
+    List<TextMeshProUGUI> textMeshes = new List<TextMeshProUGUI>();
 
     // If players already listed, remove them to update the leaderboard
     if (listedPlayersCount > 0)
@@ -71,9 +72,13 @@ public class MenuHandler : MonoBehaviour
       }
     }
 
-    for (int i = 0; i < players.Count; i += 3)
+    for (int i = 0; i < players.Count; i++)
     {
-      var text = (i % players.Count + 1) + ". " + players[i] + " | " + players[i + 1] + " | " + players[i + 2];
+      string playerUsername = players[i].username;
+      string playerScore = players[i].score;
+      string playerTime = players[i].time;
+      // var text = playerUsername + " | " + playerScore + " | " + playerTime;
+      string text = $"{playerUsername}/{playerScore}/{playerTime}";
       var textMesh = Instantiate(prefabPlayerInfoText);
       textMesh.SetText(text);
       textMesh.transform.SetParent(playerInfoContainer.transform);
@@ -83,6 +88,8 @@ public class MenuHandler : MonoBehaviour
       textMesh.rectTransform.localPosition = prefabPlayerInfoText.rectTransform.localPosition;
       textMesh.alignment = TextAlignmentOptions.Center;
       textMesh.enabled = true;
+
+      textMeshes.Add(textMesh);
     }
 
   }

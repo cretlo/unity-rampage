@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-  // Event listeners
+  // Event
   public delegate void GameOver(string username, string score, string time);
   public static event GameOver RunEnded;
   public static GameManager gameManager;
@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     _seconds = 0;
     _totalScore = 0;
     _endRun = false;
+
     // Creates a single instance of the gameManager when the GameManager
     // obj is loaded
     gameManager = this;
@@ -40,10 +41,6 @@ public class GameManager : MonoBehaviour
       _seconds = Time.timeSinceLevelLoad;
       TimeSpan timeSpan = TimeSpan.FromSeconds(_seconds);
       _time = timeSpan.ToString(@"hh\:mm\:ss");
-
-      // timeText.text = timeSpan.ToString(@"hh\:mm\:ss");
-      // scoreText.text = "Score: " + totalScore.ToString();
-
     }
 
 
@@ -73,7 +70,6 @@ public class GameManager : MonoBehaviour
     // Restart if the run is ended and return
     if (_endRun)
     {
-      Restart();
       return;
     }
 
@@ -83,7 +79,7 @@ public class GameManager : MonoBehaviour
 
   public void Restart()
   {
-    if (IsRunEnded())
+    if (_endRun)
     {
       SceneManager.LoadScene("Main");
 

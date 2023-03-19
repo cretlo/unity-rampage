@@ -4354,7 +4354,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7199821135231465668, guid: be66018591916794584cdb806a488c88, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7199821135231465668, guid: be66018591916794584cdb806a488c88, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4407,6 +4407,22 @@ PrefabInstance:
     - target: {fileID: 7199821135231465669, guid: be66018591916794584cdb806a488c88, type: 3}
       propertyPath: m_Name
       value: DefaultPlayerText
+      objectReference: {fileID: 0}
+    - target: {fileID: 7199821135231465671, guid: be66018591916794584cdb806a488c88, type: 3}
+      propertyPath: m_fontSize
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7199821135231465671, guid: be66018591916794584cdb806a488c88, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7199821135231465671, guid: be66018591916794584cdb806a488c88, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7199821135231465671, guid: be66018591916794584cdb806a488c88, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be66018591916794584cdb806a488c88, type: 3}

@@ -15,9 +15,10 @@ public class DatabaseHandler : MonoBehaviour
   private Dictionary<string, Dictionary<string, string>> playerList { get; set; }
   private GameManager _gameManager;
   private bool isPlayerSaved;
+  private List<Player> _players = new List<Player>();
 
-  // Event listeners
-  public delegate void DatabaseAction(List<string> players);
+  // Event 
+  public delegate void DatabaseAction(List<Player> players);
   public static event DatabaseAction RetreivedData;
   void Awake()
   {
@@ -53,28 +54,13 @@ public class DatabaseHandler : MonoBehaviour
   void Update()
   {
 
-    // Save the players stats when the run is ended
-    // if (_gameManager.IsRunEnded() && !isPlayerSaved)
-    // {
-    //   SavePlayerStats();
-    //   isPlayerSaved = true;
-    // }
-
-  }
-
-  void GetPlayerStats()
-  {
-    // FirebaseDatabase.DefaultInstance
-    //         .GetReference("players")
-    //         .ValueChanged += HandleValueChanged;
-
   }
 
   public async void SavePlayerStats(string username, string score, string time)
   {
     var player = new Dictionary<string, Dictionary<string, string>>();
     var playerStats = new Dictionary<string, string>() {
-        {"name", username},
+        {"username", username},
         {"score", score},
         {"time", time},
     };
@@ -90,7 +76,9 @@ public class DatabaseHandler : MonoBehaviour
 
   void HandleValueChanged(object sender, ValueChangedEventArgs args)
   {
-    List<string> leaderboard = new List<string>();
+    // Clear the list
+    _players.Clear();
+
 
     if (args.DatabaseError != null)
     {
@@ -100,37 +88,86 @@ public class DatabaseHandler : MonoBehaviour
     // Do something with the data in args.Snapshot
     string leaderboardJson = args.Snapshot.GetRawJsonValue();
     playerList = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(leaderboardJson);
-    foreach (var player in playerList)
+    foreach (var guid in playerList)
     {
-      foreach (var playerInfo in player.Value)
+      Player player = new Player();
+
+
+      foreach (var playerInfo in guid.Value)
       {
-        leaderboard.Add(playerInfo.Value);
+        // _players.Add(playerInfo.Value);
+        switch (playerInfo.Key)
+        {
+          case "username":
+            player.username = playerInfo.Value;
+            break;
+          case "score":
+            player.score = playerInfo.Value;
+            break;
+          case "time":
+            player.time = playerInfo.Value;
+            break;
+        }
       }
+      _players.Add(player);
     }
+
+    _players.Sort(new PlayerComparer());
+    _players.Reverse();
+
+    // for (int i = 0; i < _players.Count; i++)
+    // {
+    //   print("Username: " + _players[i].username + ", Score: " + _players[i].score + ", Time: " + _players[i].time);
+
+    // }
     // _gameManager.SetLeaderboard(leaderboard);
 
     // Event listener
     // Calls the menu's leaderboard handling function
-    RetreivedData(leaderboard);
+    RetreivedData(_players);
   }
 }
 
-// "player" end up becoming the root of the json conversion
-[System.Serializable]
-class Player
+class PlayerComparer : IComparer<Player>
 {
-  public Dictionary<string, Dictionary<string, string>> player;
-
-  public Player(string username, string time, string score)
+  public int Compare(Player left, Player right)
   {
-    this.player = new Dictionary<string, Dictionary<string, string>>();
-    var playerInfo = new Dictionary<string, string>() {
-        {"username", username},
-        {"time", time},
-        {"score", score}
-    };
-    player.Add(System.Guid.NewGuid().ToString(), playerInfo);
+    return int.Parse(left.score) - int.Parse(right.score);
+  }
+}
+
+public class Player
+{
+  public string username;
+  public string score;
+  public string time;
+
+  public Player()
+  {
 
   }
 
+  public Player(string username, string score, string time)
+  {
+    this.username = username;
+    this.score = score;
+    this.time = time;
+  }
 }
+// "player" end up becoming the root of the json conversion
+// [System.Serializable]
+// class Player
+// {
+//   public Dictionary<string, Dictionary<string, string>> player;
+
+//   public Player(string username, string time, string score)
+//   {
+//     this.player = new Dictionary<string, Dictionary<string, string>>();
+//     var playerInfo = new Dictionary<string, string>() {
+//         {"username", username},
+//         {"time", time},
+//         {"score", score}
+//     };
+//     player.Add(System.Guid.NewGuid().ToString(), playerInfo);
+//   }
+// }
