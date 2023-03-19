@@ -8,16 +8,17 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
   public static GameManager gameManager;
-  public TextMeshProUGUI timeText;
-  public TextMeshProUGUI scoreText;
-  private float seconds;
-  private int totalScore;
-  private bool endRun;
+  // public TextMeshProUGUI timeText;
+  // public TextMeshProUGUI scoreText;
+  private List<string> _leaderBoard;
+  private float _seconds;
+  private int _totalScore;
+  private bool _endRun;
   void Awake()
   {
-    seconds = 0;
-    totalScore = 0;
-    endRun = false;
+    _seconds = 0;
+    _totalScore = 0;
+    _endRun = false;
     // Creates a single instance of the gameManager when the GameManager
     // obj is loaded
     gameManager = this;
@@ -26,27 +27,36 @@ public class GameManager : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    if (!endRun)
+    if (!_endRun)
     {
-      seconds = Time.timeSinceLevelLoad;
-      TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
+      _seconds = Time.timeSinceLevelLoad;
+      // TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
 
-      timeText.text = timeSpan.ToString(@"hh\:mm\:ss");
-      scoreText.text = "Score: " + totalScore.ToString();
+      // timeText.text = timeSpan.ToString(@"hh\:mm\:ss");
+      // scoreText.text = "Score: " + totalScore.ToString();
 
     }
 
 
   }
+  public int GetScore()
+  {
+    return this._totalScore;
+  }
+
+  public float GetSeconds()
+  {
+    return this._seconds;
+  }
 
   public bool IsRunEnded()
   {
-    return this.endRun;
+    return this._endRun;
   }
 
   public void EndRun()
   {
-    endRun = true;
+    _endRun = true;
   }
 
   public void Restart()
@@ -59,6 +69,16 @@ public class GameManager : MonoBehaviour
   }
   public void AddPoints(int points)
   {
-    totalScore += points;
+    _totalScore += points;
+  }
+
+  public void SetLeaderboard(List<string> leaderboard)
+  {
+    this._leaderBoard = leaderboard;
+  }
+
+  public List<string> GetLeaderboard()
+  {
+    return this._leaderBoard;
   }
 }

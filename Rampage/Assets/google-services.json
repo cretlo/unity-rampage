@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "986525243719",
+    "firebase_url": "https://rampage-e2ec6-default-rtdb.firebaseio.com",
+    "project_id": "rampage-e2ec6",
+    "storage_bucket": "rampage-e2ec6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:986525243719:android:37f4c0d119f4684e48d462",
+        "android_client_info": {
+          "package_name": "com.rampage.firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "986525243719-6cuo2o27ojgc35n9illpcj3makj2m6jf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRddcz6659c534JXtQlTDyE5H2uc2MRdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "986525243719-6cuo2o27ojgc35n9illpcj3makj2m6jf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

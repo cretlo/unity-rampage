@@ -58,3 +58,14 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Firebase
+
+Rampage/[Aa]ssets/Editor Default Resources/
+
+Rampage/[Aa]ssets/ExternalDependencyManager/
+
+Rampage/[Aa]ssets/Firebase/
+
+Rampage/[Aa]ssets/Parse/
+
+Rampage/[Aa]ssets/Plugins/
