@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PunchManager : MonoBehaviour
 {
   public Transform hand;
-  public InputActionProperty primaryButton;
+  public InputActionProperty punchActivationButton;
   public Collider punchCollider;
   private Rigidbody _rb;
   private ParticleManager _particleManager;
@@ -28,16 +26,11 @@ public class PunchManager : MonoBehaviour
     }
 
   }
-  // Start is called before the first frame update
-  void Start()
-  {
-  }
 
   void Update()
   {
 
-    _handsDir = hand.position - _rb.position;
-    if (primaryButton.action.ReadValue<float>() == 1)
+    if (punchActivationButton.action.ReadValue<float>() == 1)
     {
       _canPunch = true;
       punchCollider.isTrigger = false;
@@ -47,6 +40,8 @@ public class PunchManager : MonoBehaviour
       _canPunch = false;
       punchCollider.isTrigger = true;
     }
+
+
   }
 
   // Update is called once per frame
@@ -66,6 +61,7 @@ public class PunchManager : MonoBehaviour
 
   }
 
+
   void OnCollisionEnter(Collision collider)
   {
 
@@ -83,14 +79,14 @@ public class PunchManager : MonoBehaviour
       _particleManager.SpawnPunchParticles(contact.point, contact.normal);
 
       // Joint damage to the WallChunk
-      ConfigurableJoint[] joints = collider.gameObject.GetComponents<ConfigurableJoint>();
+      // ConfigurableJoint[] joints = collider.gameObject.GetComponents<ConfigurableJoint>();
 
-      if (joints.Length == 0) { return; }
+      // if (joints.Length == 0) { return; }
 
-      for (int i = 0; i < joints.Length; i++)
-      {
-        joints[i].breakForce -= 50;
-      }
+      // for (int i = 0; i < joints.Length; i++)
+      // {
+      //   joints[i].breakForce -= 50;
+      // }
 
     }
     else

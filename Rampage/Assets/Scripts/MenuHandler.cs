@@ -21,6 +21,10 @@ public class MenuHandler : MonoBehaviour
   private float lerpedShrinkingScale;
   private GameManager _gameManager;
   private bool _isLeaderboardHandled;
+  private bool _isMenuOpen;
+  public delegate void MenuEvent();
+  public static event MenuEvent MenuOpen;
+  public static event MenuEvent MenuClosed;
   void Awake()
   {
     _canvas = GetComponent<RectTransform>();
@@ -29,6 +33,7 @@ public class MenuHandler : MonoBehaviour
     _joystickClickActive = false;
     _time = 0;
     _isLeaderboardHandled = false;
+    _isMenuOpen = false;
 
     DatabaseHandler.RetreivedData += DisplayPlayers;
 
@@ -126,25 +131,40 @@ public class MenuHandler : MonoBehaviour
 
     if (_joystickClickActive)
     {
-      if (_time >= 0.2)
-      {
-        return;
-      }
-      lerpedScale = Mathf.Lerp(0, 0.01f, _time / 0.2f);
-      _canvas.localScale = new Vector3(lerpedScale, lerpedScale, 0.01f);
-      _time += Time.deltaTime;
-
+      MenuOpen();
     }
     else
     {
-      if (_time <= 0)
+      MenuClosed();
+    }
+
+    if (_joystickClickActive)
+    {
+      if (_time < 0.2f)
       {
-        return;
+        _time += Time.deltaTime;
+      }
+      else
+      {
+        _time = 0.2f;
+      }
+      lerpedScale = Mathf.Lerp(0, 0.01f, _time / 0.2f);
+      _canvas.localScale = new Vector3(lerpedScale, lerpedScale, 0.01f);
+      // _time += Time.deltaTime;
+    }
+    else
+    {
+      if (_time > 0)
+      {
+        _time -= Time.deltaTime;
+      }
+      else
+      {
+        _time = 0;
       }
 
       lerpedShrinkingScale = Mathf.Lerp(0, _canvas.localScale.x, _time * 2f);
       _canvas.localScale = new Vector3(lerpedShrinkingScale, lerpedShrinkingScale, 0.01f);
-      _time -= Time.deltaTime;
 
     }
 

@@ -1921,7 +1921,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1023618172}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.83, y: 1.773, z: 1.86}
+  m_LocalPosition: {x: 2.569, y: 1.773, z: 1.86}
   m_LocalScale: {x: 0.35476, y: 3.3331475, z: 0.35476}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2399,13 +2399,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: {fileID: 1412725372}
-  primaryButton:
+  punchActivationButton:
     m_UseReference: 1
     m_Action:
-      m_Name: Primary Button
+      m_Name: Punch Activation Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 4b20fc2c-d9e1-45f4-b9e7-1aead6216c78
+      m_Id: 98bd8156-a814-4728-85f7-941bbdd2f815
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -2422,7 +2422,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 1
@@ -3202,6 +3202,7 @@ GameObject:
   - component: {fileID: 1412725378}
   - component: {fileID: 1412725379}
   - component: {fileID: 1412725380}
+  - component: {fileID: 1412725381}
   m_Layer: 0
   m_Name: RightHand Controller
   m_TagString: Untagged
@@ -3501,6 +3502,18 @@ MonoBehaviour:
   m_RequirePokeFilter: 1
   m_EnableUIInteraction: 1
   m_DebugVisualizationsEnabled: 0
+--- !u!114 &1412725381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412725371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3148c1fc84656c46b923c4d9ba6d724, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1457540138
 GameObject:
   m_ObjectHideFlags: 0
@@ -3548,13 +3561,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: {fileID: 1070992376}
-  primaryButton:
+  punchActivationButton:
     m_UseReference: 1
     m_Action:
-      m_Name: Primary Button
+      m_Name: Punch Activation Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 544a7458-598b-4ed3-b0e3-834d0a9004f5
+      m_Id: 0786c9e4-1c18-4cb0-bff6-77ac9e7b2d37
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -3571,7 +3584,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 1
