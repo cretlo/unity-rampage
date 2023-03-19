@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
   // public TextMeshProUGUI timeText;
   // public TextMeshProUGUI scoreText;
   private List<string> _leaderBoard;
+  private string _time;
   private float _seconds;
   private int _totalScore;
   private bool _endRun;
@@ -30,7 +31,8 @@ public class GameManager : MonoBehaviour
     if (!_endRun)
     {
       _seconds = Time.timeSinceLevelLoad;
-      // TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
+      TimeSpan timeSpan = TimeSpan.FromSeconds(_seconds);
+      _time = timeSpan.ToString(@"hh\:mm\:ss");
 
       // timeText.text = timeSpan.ToString(@"hh\:mm\:ss");
       // scoreText.text = "Score: " + totalScore.ToString();
@@ -44,9 +46,9 @@ public class GameManager : MonoBehaviour
     return this._totalScore;
   }
 
-  public float GetSeconds()
+  public string GetTime()
   {
-    return this._seconds;
+    return this._time;
   }
 
   public bool IsRunEnded()

@@ -39,8 +39,8 @@ public class DatabaseHandler : MonoBehaviour
     // Save the players stats when the run is ended
     if (_gameManager.IsRunEnded() && !isPlayerSaved)
     {
-      isPlayerSaved = true;
       SavePlayerStats();
+      isPlayerSaved = true;
     }
 
   }
@@ -58,15 +58,16 @@ public class DatabaseHandler : MonoBehaviour
     var player = new Dictionary<string, Dictionary<string, string>>();
     var playerStats = new Dictionary<string, string>() {
         {"name", "tim"},
-        {"time", "00:00:00"}
+        {"time", _gameManager.GetTime()}
     };
     player.Add(
         System.Guid.NewGuid().ToString(),
         playerStats
     );
     // Player player = new Player("Dale", "00:01:35", "250");
-    string playerJson = JsonConvert.SerializeObject(player);
-    _dbReference.Child("players").SetRawJsonValueAsync(playerJson);
+    // string playerJson = JsonConvert.SerializeObject(player);
+    string playerJson = JsonConvert.SerializeObject(playerStats);
+    _dbReference.Child("players").Child(System.Guid.NewGuid().ToString()).SetRawJsonValueAsync(playerJson);
 
     // Retreive the updated leaderboard
     GetPlayerStats();
@@ -93,7 +94,7 @@ public class DatabaseHandler : MonoBehaviour
   }
 }
 
-
+// "player" end up becoming the root of the json conversion
 [System.Serializable]
 class Player
 {

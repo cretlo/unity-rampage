@@ -11,6 +11,8 @@ public class MenuHandler : MonoBehaviour
   public TextMeshProUGUI timeText;
   public TextMeshProUGUI scoreText;
   public TextMeshProUGUI endButtonText;
+  public TextMeshProUGUI prefabPlayerInfoText;
+  public GameObject playerInfoContainer;
   private RectTransform _canvas;
   private float _canvasWidth;
   private float _canvasHeight;
@@ -59,9 +61,8 @@ public class MenuHandler : MonoBehaviour
     }
     else
     {
-      TimeSpan timeSpan = TimeSpan.FromSeconds(_gameManager.GetSeconds());
 
-      timeText.text = timeSpan.ToString(@"hh\:mm\:ss");
+      timeText.text = _gameManager.GetTime();
       scoreText.text = _gameManager.GetScore().ToString();
 
     }
@@ -71,8 +72,17 @@ public class MenuHandler : MonoBehaviour
       List<string> leaderboard = _gameManager.GetLeaderboard();
       for (int i = 0; i < leaderboard.Count; i += 2)
       {
-        print("Username: " + leaderboard[i] + ", Time: " + leaderboard[i + 1]);
+        var text = leaderboard[i] + " " + leaderboard[i + 1];
+        var textMesh = Instantiate(prefabPlayerInfoText);
+        textMesh.SetText(text);
+        textMesh.transform.SetParent(playerInfoContainer.transform);
+        textMesh.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        textMesh.transform.localScale = Vector3.one;
+        textMesh.rectTransform.localRotation = prefabPlayerInfoText.rectTransform.localRotation;
+        textMesh.rectTransform.localPosition = prefabPlayerInfoText.rectTransform.localPosition;
+
       }
+
       _isLeaderboardHandled = true;
     }
 
