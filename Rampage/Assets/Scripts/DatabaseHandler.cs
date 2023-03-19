@@ -13,23 +13,40 @@ public class DatabaseHandler : MonoBehaviour
   private DatabaseReference _dbReference;
   private string _userID;
   private Dictionary<string, Dictionary<string, string>> playerList { get; set; }
-  private List<string> leaderboard;
   private GameManager _gameManager;
   private bool isPlayerSaved;
-  // Start is called before the first frame update
+
+  // Event listeners
+  public delegate void DatabaseAction(List<string> players);
+  public static event DatabaseAction RetreivedData;
   void Awake()
   {
     isPlayerSaved = false;
     _userID = System.Guid.NewGuid().ToString();
     _dbReference = FirebaseDatabase.DefaultInstance.RootReference;
-    leaderboard = new List<string>();
+
+    // Subscribe to the game manager for when events happen
+    GameManager.RunEnded += SavePlayerStats;
 
   }
 
+  void OnDisable()
+  {
+    GameManager.RunEnded -= SavePlayerStats;
+  }
+
+  // Start is called before the first frame update
   void Start()
   {
+    // Needs to be called on the first frame so the static
+    // variable can be initialized
     _gameManager = GameManager.gameManager;
-    // SavePlayerStats();
+
+    // Passes the HandleValueChanged function to the listener when something happens
+    // on firebase's side
+    FirebaseDatabase.DefaultInstance
+            .GetReference("players").OrderByValue()
+            .ValueChanged += HandleValueChanged;
   }
 
   // Update is called once per frame
@@ -37,44 +54,44 @@ public class DatabaseHandler : MonoBehaviour
   {
 
     // Save the players stats when the run is ended
-    if (_gameManager.IsRunEnded() && !isPlayerSaved)
-    {
-      SavePlayerStats();
-      isPlayerSaved = true;
-    }
+    // if (_gameManager.IsRunEnded() && !isPlayerSaved)
+    // {
+    //   SavePlayerStats();
+    //   isPlayerSaved = true;
+    // }
 
   }
 
   void GetPlayerStats()
   {
-    FirebaseDatabase.DefaultInstance
-            .GetReference("players")
-            .ValueChanged += HandleValueChanged;
+    // FirebaseDatabase.DefaultInstance
+    //         .GetReference("players")
+    //         .ValueChanged += HandleValueChanged;
 
   }
 
-  public void SavePlayerStats()
+  public async void SavePlayerStats(string username, string score, string time)
   {
     var player = new Dictionary<string, Dictionary<string, string>>();
     var playerStats = new Dictionary<string, string>() {
-        {"name", "tim"},
-        {"time", _gameManager.GetTime()}
+        {"name", username},
+        {"score", score},
+        {"time", time},
     };
     player.Add(
         System.Guid.NewGuid().ToString(),
         playerStats
     );
-    // Player player = new Player("Dale", "00:01:35", "250");
-    // string playerJson = JsonConvert.SerializeObject(player);
-    string playerJson = JsonConvert.SerializeObject(playerStats);
-    _dbReference.Child("players").Child(System.Guid.NewGuid().ToString()).SetRawJsonValueAsync(playerJson);
 
-    // Retreive the updated leaderboard
-    GetPlayerStats();
+    string playerJson = JsonConvert.SerializeObject(playerStats);
+    string guid = System.Guid.NewGuid().ToString();
+    await _dbReference.Child("players").Child(guid).SetRawJsonValueAsync(playerJson);
   }
 
   void HandleValueChanged(object sender, ValueChangedEventArgs args)
   {
+    List<string> leaderboard = new List<string>();
+
     if (args.DatabaseError != null)
     {
       Debug.LogError(args.DatabaseError.Message);
@@ -90,7 +107,11 @@ public class DatabaseHandler : MonoBehaviour
         leaderboard.Add(playerInfo.Value);
       }
     }
-    _gameManager.SetLeaderboard(leaderboard);
+    // _gameManager.SetLeaderboard(leaderboard);
+
+    // Event listener
+    // Calls the menu's leaderboard handling function
+    RetreivedData(leaderboard);
   }
 }
 

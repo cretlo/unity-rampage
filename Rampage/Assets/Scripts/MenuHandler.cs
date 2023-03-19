@@ -8,8 +8,9 @@ using TMPro;
 public class MenuHandler : MonoBehaviour
 {
   public InputActionProperty joystickButton;
-  public TextMeshProUGUI timeText;
-  public TextMeshProUGUI scoreText;
+  public TextMeshProUGUI handMenuNameTextMesh;
+  public TextMeshProUGUI handMenuTimeTextMesh;
+  public TextMeshProUGUI handMenuScoreTextMesh;
   public TextMeshProUGUI endButtonText;
   public TextMeshProUGUI prefabPlayerInfoText;
   public GameObject playerInfoContainer;
@@ -18,9 +19,6 @@ public class MenuHandler : MonoBehaviour
   private float _canvasHeight;
   private bool _joystickClickActive;
   private float _time;
-  private float maxScale = 0.1f;
-  private Collider test;
-
   private float lerpedScale;
   private float lerpedShrinkingScale;
   private GameManager _gameManager;
@@ -34,11 +32,22 @@ public class MenuHandler : MonoBehaviour
     _time = 0;
     _isLeaderboardHandled = false;
 
+    DatabaseHandler.RetreivedData += DisplayPlayers;
+
   }
+
+  void OnDisable()
+  {
+    DatabaseHandler.RetreivedData -= DisplayPlayers;
+  }
+
   // Start is called before the first frame update
   void Start()
   {
     _gameManager = GameManager.gameManager;
+
+    // Set the username on the hand menu
+    handMenuNameTextMesh.text = _gameManager.GetUsername();
 
     // Set initial size
     _canvas.localScale = Vector3.zero;
@@ -46,13 +55,42 @@ public class MenuHandler : MonoBehaviour
 
   }
 
+  public void DisplayPlayers(List<string> players)
+  {
+    int listedPlayersCount = playerInfoContainer.transform.childCount;
+
+    // If players already listed, remove them to update the leaderboard
+    if (listedPlayersCount > 0)
+    {
+      for (int i = 0; i < listedPlayersCount; i++)
+      {
+        Transform listedPlayer = playerInfoContainer.transform.GetChild(i);
+        if (listedPlayer == null) { continue; }
+        Destroy(listedPlayer.GetComponent<TextMeshProUGUI>());
+        Destroy(listedPlayer.gameObject);
+      }
+    }
+
+    for (int i = 0; i < players.Count; i += 3)
+    {
+      var text = (i % players.Count + 1) + ". " + players[i] + " | " + players[i + 1] + " | " + players[i + 2];
+      var textMesh = Instantiate(prefabPlayerInfoText);
+      textMesh.SetText(text);
+      textMesh.transform.SetParent(playerInfoContainer.transform);
+      textMesh.transform.localRotation = Quaternion.Euler(Vector3.zero);
+      textMesh.transform.localScale = Vector3.one;
+      textMesh.rectTransform.localRotation = prefabPlayerInfoText.rectTransform.localRotation;
+      textMesh.rectTransform.localPosition = prefabPlayerInfoText.rectTransform.localPosition;
+      textMesh.alignment = TextAlignmentOptions.Center;
+      textMesh.enabled = true;
+    }
+
+  }
+
   // Update is called once per frame
   void Update()
   {
     ShowMenu();
-
-
-
     // Change button text if the run is ended
     if (_gameManager.IsRunEnded())
     {
@@ -62,30 +100,10 @@ public class MenuHandler : MonoBehaviour
     else
     {
 
-      timeText.text = _gameManager.GetTime();
-      scoreText.text = _gameManager.GetScore().ToString();
+      handMenuTimeTextMesh.text = _gameManager.GetTime();
+      handMenuScoreTextMesh.text = _gameManager.GetScore().ToString();
 
     }
-
-    if (_gameManager.GetLeaderboard() != null && !_isLeaderboardHandled)
-    {
-      List<string> leaderboard = _gameManager.GetLeaderboard();
-      for (int i = 0; i < leaderboard.Count; i += 2)
-      {
-        var text = leaderboard[i] + " " + leaderboard[i + 1];
-        var textMesh = Instantiate(prefabPlayerInfoText);
-        textMesh.SetText(text);
-        textMesh.transform.SetParent(playerInfoContainer.transform);
-        textMesh.transform.localRotation = Quaternion.Euler(Vector3.zero);
-        textMesh.transform.localScale = Vector3.one;
-        textMesh.rectTransform.localRotation = prefabPlayerInfoText.rectTransform.localRotation;
-        textMesh.rectTransform.localPosition = prefabPlayerInfoText.rectTransform.localPosition;
-
-      }
-
-      _isLeaderboardHandled = true;
-    }
-
   }
 
   public void EndGameButtonClicked()

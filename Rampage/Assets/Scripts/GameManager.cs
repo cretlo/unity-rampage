@@ -7,16 +7,23 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+  // Event listeners
+  public delegate void GameOver(string username, string score, string time);
+  public static event GameOver RunEnded;
   public static GameManager gameManager;
-  // public TextMeshProUGUI timeText;
-  // public TextMeshProUGUI scoreText;
   private List<string> _leaderBoard;
+  // TODO: Need to bring the username over from main menu
+  private string _username;
   private string _time;
   private float _seconds;
   private int _totalScore;
   private bool _endRun;
+
+
   void Awake()
   {
+    // TODO: Need to bring the username over from main menu
+    _username = "Cretlo";
     _seconds = 0;
     _totalScore = 0;
     _endRun = false;
@@ -46,6 +53,11 @@ public class GameManager : MonoBehaviour
     return this._totalScore;
   }
 
+  public string GetUsername()
+  {
+    return this._username;
+  }
+
   public string GetTime()
   {
     return this._time;
@@ -58,7 +70,15 @@ public class GameManager : MonoBehaviour
 
   public void EndRun()
   {
+    // Restart if the run is ended and return
+    if (_endRun)
+    {
+      Restart();
+      return;
+    }
+
     _endRun = true;
+    RunEnded(this._username, this._totalScore.ToString(), this._time);
   }
 
   public void Restart()
