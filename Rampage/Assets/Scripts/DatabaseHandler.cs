@@ -1,12 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Firebase;
 using Firebase.Database;
-using System.Threading;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
-using System.Text.Json;
 
 public class DatabaseHandler : MonoBehaviour
 {
@@ -88,14 +83,16 @@ public class DatabaseHandler : MonoBehaviour
     // Do something with the data in args.Snapshot
     string leaderboardJson = args.Snapshot.GetRawJsonValue();
     playerList = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(leaderboardJson);
+
+    // Go through each guid/player, get info for player, and add to list
     foreach (var guid in playerList)
     {
+
       Player player = new Player();
 
 
       foreach (var playerInfo in guid.Value)
       {
-        // _players.Add(playerInfo.Value);
         switch (playerInfo.Key)
         {
           case "username":
@@ -115,19 +112,11 @@ public class DatabaseHandler : MonoBehaviour
     _players.Sort(new PlayerComparer());
     _players.Reverse();
 
-    // for (int i = 0; i < _players.Count; i++)
-    // {
-    //   print("Username: " + _players[i].username + ", Score: " + _players[i].score + ", Time: " + _players[i].time);
-
-    // }
-    // _gameManager.SetLeaderboard(leaderboard);
-
-    // Event listener
-    // Calls the menu's leaderboard handling function
     RetreivedData(_players);
   }
 }
 
+// Used for sorting the players
 class PlayerComparer : IComparer<Player>
 {
   public int Compare(Player left, Player right)
@@ -154,20 +143,3 @@ public class Player
     this.time = time;
   }
 }
-// "player" end up becoming the root of the json conversion
-// [System.Serializable]
-// class Player
-// {
-//   public Dictionary<string, Dictionary<string, string>> player;
-
-//   public Player(string username, string time, string score)
-//   {
-//     this.player = new Dictionary<string, Dictionary<string, string>>();
-//     var playerInfo = new Dictionary<string, string>() {
-//         {"username", username},
-//         {"time", time},
-//         {"score", score}
-//     };
-//     player.Add(System.Guid.NewGuid().ToString(), playerInfo);
-//   }
-// }

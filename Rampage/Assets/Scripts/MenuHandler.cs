@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
@@ -77,7 +75,6 @@ public class MenuHandler : MonoBehaviour
       string playerUsername = players[i].username;
       string playerScore = players[i].score;
       string playerTime = players[i].time;
-      // var text = playerUsername + " | " + playerScore + " | " + playerTime;
       string text = $"{playerUsername}/{playerScore}/{playerTime}";
       var textMesh = Instantiate(prefabPlayerInfoText);
       textMesh.SetText(text);
@@ -87,6 +84,10 @@ public class MenuHandler : MonoBehaviour
       textMesh.rectTransform.localRotation = prefabPlayerInfoText.rectTransform.localRotation;
       textMesh.rectTransform.localPosition = prefabPlayerInfoText.rectTransform.localPosition;
       textMesh.alignment = TextAlignmentOptions.Center;
+      textMesh.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 16);
+      // textMesh.autoSizeTextContainer = false;
+      textMesh.enableAutoSizing = false;
+      textMesh.fontSize = 16;
       textMesh.enabled = true;
 
       textMeshes.Add(textMesh);
@@ -115,7 +116,7 @@ public class MenuHandler : MonoBehaviour
 
   public void EndGameButtonClicked()
   {
-    print("IT IS CLICKED");
+    print("Exit the game");
   }
 
   void ShowMenu()
