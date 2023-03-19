@@ -20,6 +20,7 @@ public class PunchManager : MonoBehaviour
     _canPunch = false;
     _particleManager = GameObject.FindWithTag("ParticleManager").GetComponent<ParticleManager>();
 
+    punchCollider.isTrigger = true;
     // Give error if a Particle Manager is not initialized
     if (_particleManager == null)
     {
@@ -39,10 +40,12 @@ public class PunchManager : MonoBehaviour
     if (primaryButton.action.ReadValue<float>() == 1)
     {
       _canPunch = true;
+      punchCollider.isTrigger = false;
     }
     else
     {
       _canPunch = false;
+      punchCollider.isTrigger = true;
     }
   }
 
