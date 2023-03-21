@@ -22,9 +22,14 @@ public class DatabaseHandler : MonoBehaviour
     _dbReference = FirebaseDatabase.DefaultInstance.RootReference;
 
     // Subscribe to the game manager for when events happen
-    GameManager.RunEnded += SavePlayerStats;
+    // GameManager.RunEnded += SavePlayerStats;
 
   }
+  void OnEnable()
+  {
+    GameManager.RunEnded += SavePlayerStats;
+  }
+
 
   void OnDisable()
   {
@@ -72,12 +77,18 @@ public class DatabaseHandler : MonoBehaviour
   void HandleValueChanged(object sender, ValueChangedEventArgs args)
   {
     // Clear the list
-    _players.Clear();
+    _players = new List<Player>();
 
 
     if (args.DatabaseError != null)
     {
       Debug.LogError(args.DatabaseError.Message);
+      return;
+    }
+
+    if (!args.Snapshot.Exists)
+    {
+      Debug.LogError("Firebase snapshot doesn't exist");
       return;
     }
     // Do something with the data in args.Snapshot
@@ -103,6 +114,9 @@ public class DatabaseHandler : MonoBehaviour
             break;
           case "time":
             player.time = playerInfo.Value;
+            break;
+          default:
+            Debug.LogError("Switch case didn't recognice a key");
             break;
         }
       }
