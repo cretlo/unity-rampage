@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
   void Awake()
   {
     // TODO: Need to bring the username over from main menu
-    _username = "Cretlo";
+    _username = "Carlor";
     _seconds = 0;
     _totalScore = 0;
     _endRun = false;
