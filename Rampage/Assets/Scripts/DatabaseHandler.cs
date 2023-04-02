@@ -140,6 +140,7 @@ public class DatabaseHandler : MonoBehaviour
     {
 
       Player player = new Player();
+      player.sysid = sysid.Key;
 
 
       foreach (var playerInfo in sysid.Value)
@@ -206,6 +207,7 @@ class PlayerComparer : IComparer<Player>
 
 public class Player
 {
+  public string sysid;
   public string username;
   public string score;
   public string seconds;
@@ -222,5 +224,6 @@ public class Player
     this.score = score;
     this.time = time;
     this.seconds = seconds;
+    this.sysid = SystemInfo.deviceUniqueIdentifier;
   }
 }

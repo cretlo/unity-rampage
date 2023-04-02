@@ -94,6 +94,10 @@ public class MenuHandler : MonoBehaviour
       textMesh.enableAutoSizing = false;
       textMesh.fontSize = 16;
       textMesh.enabled = true;
+      if (players[i].sysid == SystemInfo.deviceUniqueIdentifier)
+      {
+        textMesh.color = new Color(0, 212, 253, 255);
+      }
 
       textMeshes.Add(textMesh);
     }
