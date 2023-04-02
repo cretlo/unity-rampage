@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Firebase.Database;
 using Newtonsoft.Json;
-
+using ProfanityFilter;
 public class DatabaseHandler : MonoBehaviour
 {
   private DatabaseReference _dbReference;
@@ -58,6 +58,14 @@ public class DatabaseHandler : MonoBehaviour
 
   public async void SavePlayerStats(string username, string score, string time, string seconds)
   {
+    ProfanityFilter.ProfanityFilter filter = new ProfanityFilter.ProfanityFilter();
+    // Don't allow a username with profanity to get posted to the leaderboard
+    if (filter.IsProfanity(username))
+    {
+      return;
+    }
+
+
     // var player = new Dictionary<string, Dictionary<string, string>>();
     var playerStats = new Dictionary<string, string>() {
         {"username", username},
@@ -157,6 +165,10 @@ public class DatabaseHandler : MonoBehaviour
 
     _players.Sort(new PlayerComparer());
     _players.Reverse();
+    if (_players.Count > 100)
+    {
+      _players = _players.GetRange(0, 100);
+    }
 
     RetreivedData(_players);
   }
