@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
   // Event
-  public delegate void GameOver(string username, string score, string time);
+  public delegate void GameOver(string username, string score, string time, string seconds);
   public static event GameOver RunEnded;
   public static GameManager gameManager;
   private List<string> _leaderBoard;
@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
   void Awake()
   {
     // TODO: Need to bring the username over from main menu
-    _username = "Carlor";
+    _username = "Cretlo";
     _seconds = 0;
     _totalScore = 0;
     _endRun = false;
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
     }
 
     _endRun = true;
-    RunEnded(this._username, this._totalScore.ToString(), this._time);
+    RunEnded(this._username, this._totalScore.ToString(), this._time, this._seconds.ToString());
   }
 
   public void Restart()

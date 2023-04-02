@@ -56,22 +56,51 @@ public class DatabaseHandler : MonoBehaviour
 
   }
 
-  public async void SavePlayerStats(string username, string score, string time)
+  public async void SavePlayerStats(string username, string score, string time, string seconds)
   {
-    var player = new Dictionary<string, Dictionary<string, string>>();
+    // var player = new Dictionary<string, Dictionary<string, string>>();
     var playerStats = new Dictionary<string, string>() {
         {"username", username},
         {"score", score},
+        {"seconds", seconds},
         {"time", time},
     };
-    player.Add(
-        System.Guid.NewGuid().ToString(),
-        playerStats
-    );
+    // player.Add(
+    //     System.Guid.NewGuid().ToString(),
+    //     playerStats
+    // );
 
     string playerJson = JsonConvert.SerializeObject(playerStats);
-    string guid = System.Guid.NewGuid().ToString();
-    await _dbReference.Child("players").Child(guid).SetRawJsonValueAsync(playerJson);
+    string sysid = SystemInfo.deviceUniqueIdentifier;
+
+    var snapshot = await _dbReference.Child("players").Child(sysid).GetValueAsync();
+
+    if (snapshot.Exists)
+    {
+      string fetchedScore = snapshot.Child("score").Value.ToString();
+      string fetchedSeconds = snapshot.Child("seconds").Value.ToString();
+      int dbScore = int.Parse(fetchedScore);
+      float dbSeconds = float.Parse(fetchedSeconds);
+      int intScore = int.Parse(score);
+      float floatSeconds = float.Parse(seconds);
+
+      if (dbScore > intScore)
+      {
+        return;
+      }
+
+      if (dbScore == intScore)
+      {
+        if (dbSeconds < floatSeconds)
+        {
+          return;
+        }
+      }
+    }
+
+
+    // string guid = System.Guid.NewGuid().ToString();
+    await _dbReference.Child("players").Child(sysid).SetRawJsonValueAsync(playerJson);
   }
 
   void HandleValueChanged(object sender, ValueChangedEventArgs args)
@@ -96,13 +125,13 @@ public class DatabaseHandler : MonoBehaviour
     playerList = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(leaderboardJson);
 
     // Go through each guid/player, get info for player, and add to list
-    foreach (var guid in playerList)
+    foreach (var sysid in playerList)
     {
 
       Player player = new Player();
 
 
-      foreach (var playerInfo in guid.Value)
+      foreach (var playerInfo in sysid.Value)
       {
         switch (playerInfo.Key)
         {
@@ -114,6 +143,9 @@ public class DatabaseHandler : MonoBehaviour
             break;
           case "time":
             player.time = playerInfo.Value;
+            break;
+          case "seconds":
+            player.seconds = playerInfo.Value;
             break;
           default:
             Debug.LogError("Switch case didn't recognice a key");
@@ -135,7 +167,25 @@ class PlayerComparer : IComparer<Player>
 {
   public int Compare(Player left, Player right)
   {
-    return int.Parse(left.score) - int.Parse(right.score);
+    int leftScore = int.Parse(left.score);
+    int rightScore = int.Parse(right.score);
+    float leftSeconds = float.Parse(left.seconds);
+    float rightSeconds = float.Parse(right.seconds);
+
+    if (leftScore == rightScore)
+    {
+      if (leftSeconds == rightSeconds) { return 0; }
+
+      if (leftSeconds > rightSeconds)
+      {
+        return -1;
+      }
+      else
+      {
+        return 1;
+      }
+    }
+    return leftScore - rightScore;
   }
 }
 
@@ -143,6 +193,7 @@ public class Player
 {
   public string username;
   public string score;
+  public string seconds;
   public string time;
 
   public Player()
@@ -150,10 +201,11 @@ public class Player
 
   }
 
-  public Player(string username, string score, string time)
+  public Player(string username, string score, string time, string seconds)
   {
     this.username = username;
     this.score = score;
     this.time = time;
+    this.seconds = seconds;
   }
 }
