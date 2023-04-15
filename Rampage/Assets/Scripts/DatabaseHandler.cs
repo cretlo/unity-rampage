@@ -84,34 +84,42 @@ public class DatabaseHandler : MonoBehaviour
     string playerJson = JsonConvert.SerializeObject(playerStats);
     string sysid = SystemInfo.deviceUniqueIdentifier;
 
-    var snapshot = await _dbReference.Child("players").Child(sysid).GetValueAsync();
-
+    DataSnapshot snapshot = await _dbReference.Child("players").GetValueAsync();
     if (snapshot.Exists)
     {
-      string fetchedScore = snapshot.Child("score").Value.ToString();
-      string fetchedSeconds = snapshot.Child("seconds").Value.ToString();
-      int dbScore = int.Parse(fetchedScore);
-      float dbSeconds = float.Parse(fetchedSeconds);
-      int intScore = int.Parse(score);
-      float floatSeconds = float.Parse(seconds);
-
-      if (dbScore > intScore)
+      if (!snapshot.Child(sysid).Exists)
       {
-        return;
+        await _dbReference.Child("players").Child(sysid).SetRawJsonValueAsync(playerJson);
       }
-
-      if (dbScore == intScore)
+      else
       {
-        if (dbSeconds < floatSeconds)
+        snapshot = snapshot.Child(sysid);
+        string fetchedScore = snapshot.Child("score").Value.ToString();
+        string fetchedSeconds = snapshot.Child("seconds").Value.ToString();
+        int dbScore = int.Parse(fetchedScore);
+        float dbSeconds = float.Parse(fetchedSeconds);
+        int intScore = int.Parse(score);
+        float floatSeconds = float.Parse(seconds);
+
+        if (dbScore > intScore)
         {
           return;
         }
+
+        if (dbScore == intScore)
+        {
+          if (dbSeconds < floatSeconds)
+          {
+            return;
+          }
+        }
+
+        // string guid = System.Guid.NewGuid().ToString();
+        await _dbReference.Child("players").Child(sysid).SetRawJsonValueAsync(playerJson);
+
       }
     }
-
-
-    // string guid = System.Guid.NewGuid().ToString();
-    await _dbReference.Child("players").Child(sysid).SetRawJsonValueAsync(playerJson);
+    return;
   }
 
   void HandleValueChanged(object sender, ValueChangedEventArgs args)
@@ -131,6 +139,7 @@ public class DatabaseHandler : MonoBehaviour
       Debug.LogError("Firebase snapshot doesn't exist");
       return;
     }
+
     // Do something with the data in args.Snapshot
     string leaderboardJson = args.Snapshot.GetRawJsonValue();
     playerList = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(leaderboardJson);
