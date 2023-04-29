@@ -16,7 +16,7 @@ For our project we set out to build a time-based virtual reality destruction san
 
 # Project Planning and Execution
 
-- [Design Requirements & Specification](https://google.com)
+- [Design Requirements & Specification](https://uwy-my.sharepoint.com/:w:/g/personal/ireimers_uwyo_edu/EUpWzcEJwFNKkzetrwYUOowBspXquCv7HifL29Dr8rxh2Q?e=6Re07Thttps://google.com)
 
 - Expected Finalized Plan of Work
 
