@@ -1,18 +1,22 @@
-# 1. A synopsis of your project goals
+# Project Synopsis
 
 For our project we set out to build a time-based virtual reality destruction sandbox, taking motivation from the 1990s 2D game, Rampage. Completely physics based, the buildings are entirely destructible, allowing the player to cause destruction anyway they see fit. The player comes equipped with various abilities and movement capabilities such as walking, turning, leaping, climbing, punching, grabbing, and throwing, allowing for a dynamic motion experience. Additionally, for the time-based aspect of the experience, the player is timed with a tracked score that equates to the destruction they’ve caused, saved to a Firebase database, and displayed on an in-game world leaderboard. All of this resides in an environment completely constructed from scratch. This includes a dynamic skybox, navmesh agents and all assets visible, heavily optimized using LOD (Level of Detail).
 
-# 2. Status Updates
+# Status Updates
 
 - [Status 1](https://github.com/cretlo/unity-vr-rampage/blob/main/status/status1.md)
 - [Status 2](https://github.com/cretlo/unity-vr-rampage/blob/main/status/status2.md)
 - [Status 3](https://github.com/cretlo/unity-vr-rampage/blob/main/status/status3.md)
 - [Status 4](https://github.com/cretlo/unity-vr-rampage/blob/main/status/status4.md)
 
-# 3. Videos
+# Videos
 
 - [Working Demo](https://www.youtube.com/watch?v=SysGxwCsr8I)
 - [In-Development Demo](https://www.youtube.com/watch?v=DtVMk030N-U)
+
+# Presentation
+
+- [PowerPoint Presentation](https://uwy-my.sharepoint.com/:p:/g/personal/ireimers_uwyo_edu/EYY5WqaJJGpLjfqGb6QT-HQBsVIcz2s93dKQ1j1kw9bwBQ?e=ddQHDo)
 
 # Project Planning and Execution
 
